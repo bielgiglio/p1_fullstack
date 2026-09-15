@@ -1,0 +1,33 @@
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: estoque_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: senha
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    command: >
+      sh -c "python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_NAME=estoque_db
+      - DB_USER=postgres
+      - DB_PASSWORD=senha
+      - DB_HOST=db
+    depends_on:
+      - db
+
+volumes:
+  pgdata:

@@ -1,0 +1,42 @@
+{% extends 'estoque/base.html' %}
+
+{% block conteudo %}
+    <div class="card">
+        <div class="card-header">
+            <h3>Histórico Geral de Movimentações</h3>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Tipo</th>
+                    <th>Produto</th>
+                    <th>Depósito</th>
+                    <th>Quantidade</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in movimentacoes %}
+                    <tr>
+                        <td>{{ m.data|date:"d/m/Y" }}</td>
+                        <td>
+                            {% if m.tipo == 'ENTRADA' %}
+                                <span class="badge badge-info">Entrada</span>
+                            {% else %}
+                                <span class="badge badge-danger">Saída</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ m.produto.nome }}</td>
+                        <td>{{ m.deposito.nome }}</td>
+                        <td><strong>{{ m.quantidade }}</strong></td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="empty-state">Nenhuma movimentação registrada até o momento.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

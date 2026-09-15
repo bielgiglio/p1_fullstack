@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Estoque</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        body {
+            background-color: #f4f6f8;
+            color: #2d3748;
+            padding-bottom: 40px;
+        }
+        header {
+            background-color: #1a202c;
+            color: #ffffff;
+            padding: 18px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        nav a {
+            color: #cbd5e0;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        nav a:hover {
+            color: #ffffff;
+        }
+        main {
+            max-width: 1000px;
+            margin: 32px auto;
+            padding: 0 16px;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #edf2f7;
+            padding-bottom: 12px;
+        }
+        .card-header h3 {
+            font-size: 1.15rem;
+            color: #2d3748;
+        }
+        .card-header span {
+            font-size: 0.85rem;
+            color: #718096;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+        table th {
+            background-color: #f7fafc;
+            color: #4a5568;
+            font-weight: 600;
+            padding: 12px 14px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        table tr:last-child td {
+            border-bottom: none;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .badge-danger {
+            background-color: #fed7d7;
+            color: #9b2c2c;
+        }
+        .badge-success {
+            background-color: #c6f6d5;
+            color: #22543d;
+        }
+        .badge-info {
+            background-color: #bee3f8;
+            color: #2b6cb0;
+        }
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .form-container p {
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+        .form-container label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #4a5568;
+        }
+        .form-container input,
+        .form-container select,
+        .form-container textarea {
+            padding: 10px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        .form-container input:focus,
+        .form-container select:focus {
+            border-color: #3182ce;
+        }
+        button.btn-primary {
+            background-color: #3182ce;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button.btn-primary:hover {
+            background-color: #2b6cb0;
+        }
+        .empty-state {
+            color: #a0aec0;
+            text-align: center;
+            padding: 24px;
+        }
+        .errorlist {
+            color: #e53e3e;
+            list-style: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>Controle de Estoque</h2>
+        <nav>
+            <a href="{% url 'saldo_depositos' %}">Saldos por Depósito</a>
+            <a href="{% url 'lista_movimentacoes' %}">Movimentações</a>
+            <a href="{% url 'nova_movimentacao' %}">Nova Movimentação</a>
+        </nav>
+    </header>
+    <main>
+        {% block conteudo %}
+        {% endblock %}
+    </main>
+</body>
+</html>
