@@ -1,6 +1,30 @@
 {% extends 'estoque/base.html' %}
 
 {% block conteudo %}
+    <div class="card">
+        <form method="get" class="filter-bar">
+            <input 
+                type="text" 
+                name="q" 
+                placeholder="Buscar por nome do produto..." 
+                value="{{ request.GET.q }}"
+                class="filter-input"
+            >
+            <select name="fornecedor" class="filter-select">
+                <option value="">Todos os Fornecedores</option>
+                {% for f in fornecedores %}
+                    <option value="{{ f.id }}" {% if request.GET.fornecedor == f.id|stringformat:"s" %}selected{% endif %}>
+                        {{ f.nome }}
+                    </option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn-primary" style="width: auto; padding: 8px 18px;">Filtrar</button>
+            {% if request.GET.q or request.GET.fornecedor %}
+                <a href="{% url 'saldo_depositos' %}" class="btn-link">Limpar Filtros</a>
+            {% endif %}
+        </form>
+    </div>
+
     {% for grupo in relatorio %}
         <div class="card">
             <div class="card-header">
@@ -33,7 +57,7 @@
                         </tr>
                     {% empty %}
                         <tr>
-                            <td colspan="4" class="empty-state">Nenhum produto cadastrado.</td>
+                            <td colspan="4" class="empty-state">Nenhum produto encontrado para os filtros selecionados.</td>
                         </tr>
                     {% endfor %}
                 </tbody>

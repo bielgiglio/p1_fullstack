@@ -1,12 +1,27 @@
 from django.shortcuts import render, redirect
-from .models import Produto, Deposito, Movimentacao
+from django.db.models import Q
+from .models import Produto, Deposito, Movimentacao, Fornecedor
 from .forms import MovimentacaoForm
 
 def saldo_por_deposito(request):
     depositos = Deposito.objects.all()
-    produtos = Produto.objects.all()
-    relatorio = []
+    fornecedores = Fornecedor.objects.all()
 
+    # Leitura dos parâmetros da URL
+    termo_busca = request.GET.get('q', '').strip()
+    fornecedor_id = request.GET.get('fornecedor', '').strip()
+
+    # Desafio Extra: combinação dinâmica de filtros com Q()
+    filtros = Q()
+    if termo_busca:
+        filtros &= Q(nome__icontains=termo_busca)
+    if fornecedor_id:
+        filtros &= Q(fornecedor_id=fornecedor_id)
+
+    # Aplicação dos filtros sobre a lista de produtos
+    produtos = Produto.objects.filter(filtros)
+
+    relatorio = []
     for dep in depositos:
         itens_deposito = []
         for prod in produtos:
@@ -29,7 +44,11 @@ def saldo_por_deposito(request):
             'itens': itens_deposito
         })
 
-    return render(request, 'estoque/saldo_depositos.html', {'relatorio': relatorio})
+    contexto = {
+        'relatorio': relatorio,
+        'fornecedores': fornecedores,
+    }
+    return render(request, 'estoque/saldo_depositos.html', contexto)
 
 
 def lista_movimentacoes(request):
