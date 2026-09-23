@@ -13,9 +13,9 @@ class MovimentacaoForm(forms.ModelForm):
         tipo = cleaned_data.get('tipo')
         quantidade = cleaned_data.get('quantidade')
 
-        if produto and deposito and tipo and quantidade:
+        if produto and deposito and tipo and quantidade is not None:
             if quantidade <= 0:
-                self.add_error('quantidade', 'A quantidade precisa ser maior que zero.')
+                raise forms.ValidationError("A quantidade movimentada deve ser maior que zero.")
 
             if tipo == 'SAIDA':
                 entradas = Movimentacao.objects.filter(deposito=deposito, produto=produto, tipo='ENTRADA')
@@ -26,6 +26,9 @@ class MovimentacaoForm(forms.ModelForm):
                 saldo_disponivel = total_entradas - total_saidas
 
                 if quantidade > saldo_disponivel:
-                    self.add_error('quantidade', f'Saldo insuficiente. Esse depósito possui apenas {saldo_disponivel} unidade(s) disponível(is).')
+                    raise forms.ValidationError(
+                        f"Operação cancelada: a saída de {quantidade} unidade(s) ultrapassa o estoque disponível "
+                        f"de '{produto.nome}' no depósito '{deposito.nome}' (saldo atual: {saldo_disponivel})."
+                    )
 
         return cleaned_data
