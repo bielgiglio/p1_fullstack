@@ -17,6 +17,12 @@ A aplicação consiste em um sistema monolítico em **Django puro** com persist�
 
 ---
 
+## Justificativa das Features Obrigatórias (Relatório P1)
+
+Para a **Feature 1**, implementou-se a busca textual pelo campo `nome` da entidade `Produto` combinada ao filtro relacional por `Fornecedor`[cite: 10], pois em um ambiente de estoque o operador precisa localizar rapidamente itens específicos ou analisar o catálogo sob responsabilidade de um parceiro comercial determinado[cite: 10]; caso esses recursos não existissem, a conferência de saldos e o acompanhamento do ponto de pedido em armazéns com muitos itens se tornariam lentos e visualmente inviáveis[cite: 6, 10]. Para a **Feature 2**, estabeleceu-se no método `clean()` do `ModelForm` a regra de domínio que impede registros de movimentações de saída superiores ao saldo físico disponível daquele produto no depósito selecionado[cite: 10]. Essa validação é indispensável porque, se ela não estivesse ativa, o sistema permitiria o registro de estoques negativos, quebrando a integridade dos dados, distorcendo o histórico contábil das movimentações e mascarando a necessidade real de reposição do inventário[cite: 6, 10].
+
+---
+
 ## Tecnologias Utilizadas
 
 * **Linguagem:** Python 3.11
